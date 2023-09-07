@@ -69,3 +69,5 @@ def auto_return_books(session):
             book.available = True
             print(f"You have returned '{book.title}' by {book.author} automatically.")
 
+    session.commit()
+
