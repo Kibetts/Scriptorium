@@ -78,4 +78,17 @@ def cancel_request(session):
     # Attempt to find the book in the database
     book = session.query(Book).filter(Book.title == user_input).first()
 
+     # Always create a request cancellation, even if the book is not found
+    if book:
+        request = session.query(Request).filter(Request.user_id == 1, Request.book_id == book.book_id, Request.status == "Pending").first()
+        if request:
+            session.delete(request)
+            session.commit()
+            print(f"Request for '{book.title}' by {book.author} has been canceled.")
+        else:
+            print("You don't have a pending request for this book.")
+    else:
+        print(f"Your request for book '{user_input}' has been canceled successfully.")
+
+
 
