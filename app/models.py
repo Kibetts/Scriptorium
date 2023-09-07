@@ -25,6 +25,9 @@ class Book(Base):
     created_at = Column(TIMESTAMP)
     available = Column(Boolean)
 
+    borrowed_by = relationship('Borrow', back_populates='book')
+
+
 class Request(Base):
     __tablename__ = 'requests'
 
