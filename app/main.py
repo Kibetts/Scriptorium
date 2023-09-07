@@ -38,3 +38,21 @@ def request_book(session):
     else:
         # If the book is not in the database, still create a request
         print(f"Book '{user_input}' not found. Your request has been submitted.")
+
+# Function to borrow a book
+def borrow_book(session, book_title):
+    book = session.query(Book).filter(Book.title == book_title).first()
+
+    if book is None:
+        print("Book not found.")
+        return
+
+    if book.available:
+        borrow = Borrow(user_id=1, book_id=book.book_id, borrow_date=datetime.now(), return_date=None)  # Replace user_id as needed
+        session.add(borrow)
+        book.available = False
+        session.commit()
+        print(f"You have borrowed '{book.title}' by {book.author}.")
+    else:
+        print("The selected book is not available. You can request it.")
+        request_book(session)
