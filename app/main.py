@@ -103,6 +103,19 @@ if __name__ == "__main__":
         print("2. Auto Return Borrowed Books (After 20 days)")
         print("3. Cancel Request")
         print("4. Exit")
+        choice = input("Select an option: ")
+
+        if choice == '1':
+            list_available_books(session)
+        elif choice == '2':
+            auto_return_books(session)
+        elif choice == '3':
+            cancel_request(session)
+        elif choice == '4':
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
 
 
 
