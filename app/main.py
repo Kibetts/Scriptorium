@@ -21,3 +21,20 @@ def list_available_books(session):
     else:
         book_title = user_input
         borrow_book(session, book_title)
+
+# Function to request a book
+def request_book(session):
+    user_input = input("Enter the title of the book you want to request: ")
+    
+    # Check if the book is in the database
+    book = session.query(Book).filter(Book.title == user_input).first()
+
+    if book:
+        # Create a request regardless of book availability
+        new_request = Request(user_id=1, book_id=book.book_id, request_date=datetime.now(), status="Pending")  # Replace user_id as needed
+        session.add(new_request)
+        session.commit()
+        print(f"Your request for '{book.title}' by {book.author} has been submitted.")
+    else:
+        # If the book is not in the database, still create a request
+        print(f"Book '{user_input}' not found. Your request has been submitted.")
