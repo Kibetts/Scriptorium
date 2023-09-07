@@ -27,3 +27,6 @@ book15 = Book(title='The Grapes of Wrath', author='John Steinbeck', copies=6, cr
 # Add instances to the session and commit
 session.add_all([user1, user2, book1, book2, book3, book4, book5, book6, book7, book8, book9, book10, book11, book12, book13, book14, book15])
 session.commit()
+
+# Close the session when done
+session.close()
