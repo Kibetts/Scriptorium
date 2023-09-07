@@ -40,3 +40,6 @@ class Borrow(Base):
     book_id = Column(Integer, ForeignKey('books.book_id'))
     borrow_date = Column(TIMESTAMP)
     return_date = Column(TIMESTAMP)
+
+# Create the database tables
+Base.metadata.create_all(engine)
