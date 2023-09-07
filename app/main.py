@@ -91,4 +91,9 @@ def cancel_request(session):
         print(f"Your request for book '{user_input}' has been canceled successfully.")
 
 
+if __name__ == "__main__":
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+
 
