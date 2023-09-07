@@ -56,3 +56,16 @@ def borrow_book(session, book_title):
     else:
         print("The selected book is not available. You can request it.")
         request_book(session)
+
+    # Function to return borrowed books automatically after 20 days
+def auto_return_books(session):
+    borrowings = session.query(Borrow).filter(Borrow.return_date == None).all()
+
+    for borrowing in borrowings:
+        borrow_date = borrowing.borrow_date
+        if datetime.now() - borrow_date > timedelta(days=20):
+            borrowing.return_date = datetime.now()
+            book = session.query(Book).filter(Book.book_id == borrowing.book_id).first()
+            book.available = True
+            print(f"You have returned '{book.title}' by {book.author} automatically.")
+
