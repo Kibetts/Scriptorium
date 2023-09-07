@@ -13,6 +13,8 @@ class User(Base):
     user_id = Column(Integer, primary_key=True)
     name = Column(String)
 
+    borrowed_books = relationship('Borrow', back_populates='user')
+
 class Book(Base):
     __tablename__ = 'books'
 
