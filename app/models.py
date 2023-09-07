@@ -12,3 +12,13 @@ class User(Base):
 
     user_id = Column(Integer, primary_key=True)
     name = Column(String)
+
+class Book(Base):
+    __tablename__ = 'books'
+
+    book_id = Column(Integer, primary_key=True)
+    title = Column(String)
+    author = Column(String)
+    copies = Column(Integer)
+    created_at = Column(TIMESTAMP)
+    available = Column(Boolean)
