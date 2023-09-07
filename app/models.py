@@ -37,6 +37,9 @@ class Request(Base):
     request_date = Column(TIMESTAMP)
     status = Column(String)
 
+    user = relationship('User')
+    book = relationship('Book')
+
 class Borrow(Base):
     __tablename__ = 'borrows'
 
