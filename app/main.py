@@ -71,3 +71,11 @@ def auto_return_books(session):
 
     session.commit()
 
+# Function to cancel requests for unavailable books
+def cancel_request(session):
+    user_input = input("Enter the title of the book you want to cancel the request for: ")
+    
+    # Attempt to find the book in the database
+    book = session.query(Book).filter(Book.title == user_input).first()
+
+
