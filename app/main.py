@@ -95,5 +95,14 @@ if __name__ == "__main__":
     Session = sessionmaker(bind=engine)
     session = Session()
 
+    print("Welcome to Scriptorium Inc!")
+
+    while True:
+        print("\nChoose an option below:")
+        print("1. List Available Books")
+        print("2. Auto Return Borrowed Books (After 20 days)")
+        print("3. Cancel Request")
+        print("4. Exit")
+
 
 
