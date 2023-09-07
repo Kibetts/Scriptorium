@@ -49,5 +49,8 @@ class Borrow(Base):
     borrow_date = Column(TIMESTAMP)
     return_date = Column(TIMESTAMP)
 
+    user = relationship('User')
+    book = relationship('Book')
+
 # Create the database tables
 Base.metadata.create_all(engine)
