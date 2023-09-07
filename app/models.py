@@ -31,3 +31,12 @@ class Request(Base):
     book_id = Column(Integer, ForeignKey('books.book_id'))
     request_date = Column(TIMESTAMP)
     status = Column(String)
+
+class Borrow(Base):
+    __tablename__ = 'borrows'
+
+    borrow_id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.user_id'))
+    book_id = Column(Integer, ForeignKey('books.book_id'))
+    borrow_date = Column(TIMESTAMP)
+    return_date = Column(TIMESTAMP)
