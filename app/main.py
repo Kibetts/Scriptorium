@@ -148,7 +148,8 @@ if __name__ == "__main__":
         print("1. List Available Books")
         print("2. Auto Return Borrowed Books (After 20 days)")
         print("3. Cancel Request")
-        print("4. Exit")
+        print("4. Return Borrowed Book")
+        print("5. Exit")
         choice = input("Select an option: ")
 
         if choice == '1':
