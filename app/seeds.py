@@ -7,6 +7,13 @@ session = Session()
 
 user1 = User(name='Neema')
 user2 = User(name='Jabez')
+user2 = User(name='Robert')
+user2 = User(name='Faith')
+user2 = User(name='Collins')
+user2 = User(name='Ammon')
+user2 = User(name='Jurgen')
+user2 = User(name='Ian')
+
 
 book1 = Book(title='To Kill a Mockingbird', author='Harper Lee', copies=5, created_at=datetime.now(), available=True)
 book2 = Book(title='The Great Gatsby', author='F. Scott Fitzgerald', copies=9, created_at=datetime.now(), available=True)

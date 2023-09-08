@@ -24,7 +24,7 @@ def list_available_books(session):
         borrow_book(session, book_title)
 
 # Function to request a book
-def request_book(session):
+def request_book(session, user):
     user_input = input("Enter the title of the book you want to request: ")
     
     # Check if the book is in the database
@@ -32,7 +32,7 @@ def request_book(session):
 
     if book:
         # Create a request regardless of book availability
-        new_request = Request(user_id=1, book_id=book.book_id, request_date=datetime.now(), status="Pending")  # Replace user_id as needed
+        new_request = Request(user_id=user.user_id, book_id=book.book_id, request_date=datetime.now(), status="Pending")  
         session.add(new_request)
         session.commit()
         print(f"Your request for '{book.title}' by {book.author} has been submitted.")
@@ -41,7 +41,7 @@ def request_book(session):
         print(f"Book '{user_input}' not found. Your request has been submitted.")
 
 # Function to borrow a book
-def borrow_book(session, book_title):
+def borrow_book(session, book_title, user):
     book = session.query(Book).filter(Book.title == book_title).first()
 
     if book is None:
@@ -49,7 +49,7 @@ def borrow_book(session, book_title):
         return
 
     if book.available:
-        borrow = Borrow(user_id=1, book_id=book.book_id, borrow_date=datetime.now(), return_date=None)  # Replace user_id as needed
+        borrow = Borrow(user_id=user.user_id, book_id=book.book_id, borrow_date=datetime.now(), return_date=None)  
         session.add(borrow)
         book.available = False
         session.commit()
