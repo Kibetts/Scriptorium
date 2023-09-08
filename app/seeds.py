@@ -7,12 +7,12 @@ session = Session()
 
 user1 = User(name='Neema')
 user2 = User(name='Jabez')
-user2 = User(name='Robert')
-user2 = User(name='Faith')
-user2 = User(name='Collins')
-user2 = User(name='Ammon')
-user2 = User(name='Jurgen')
-user2 = User(name='Ian')
+user3 = User(name='Robert')
+user4 = User(name='Faith')
+user5 = User(name='Collins')
+user6 = User(name='Ammon')
+user7 = User(name='Jurgen')
+user8 = User(name='Ian')
 
 
 book1 = Book(title='To Kill a Mockingbird', author='Harper Lee', copies=5, created_at=datetime.now(), available=True)
@@ -32,7 +32,7 @@ book14 = Book(title='The Girl with the Dragon Tattoo', author='Stieg Larsson', c
 book15 = Book(title='The Grapes of Wrath', author='John Steinbeck', copies=6, created_at=datetime.now(), available=True)
 
 # Add instances to the session and commit
-session.add_all([user1, user2, book1, book2, book3, book4, book5, book6, book7, book8, book9, book10, book11, book12, book13, book14, book15])
+session.add_all([user1, user2, user3, user4, user5, user6, user7, user8, book1, book2, book3, book4, book5, book6, book7, book8, book9, book10, book11, book12, book13, book14, book15])
 session.commit()
 
 # Close the session when done

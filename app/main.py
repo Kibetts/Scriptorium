@@ -17,31 +17,48 @@ def list_available_books(session):
     user_input = input("Enter the title of the book you want to borrow or 'r' to request: ")
 
     if user_input == 'r':
-         request_book(session)
+         request_book(session, None)
        
     else:
-        book_title = user_input
-        borrow_book(session, book_title)
+        user_name = input("Enter your name: ")  # Prompt the user for their name
+        borrow_book(session, user_input, user_name)  # Pass user_name to borrow_book
+
 
 # Function to request a book
-def request_book(session, user):
+def request_book(session, user_name):
     user_input = input("Enter the title of the book you want to request: ")
-    
-    # Check if the book is in the database
-    book = session.query(Book).filter(Book.title == user_input).first()
 
-    if book:
-        # Create a request regardless of book availability
-        new_request = Request(user_id=user.user_id, book_id=book.book_id, request_date=datetime.now(), status="Pending")  
-        session.add(new_request)
-        session.commit()
-        print(f"Your request for '{book.title}' by {book.author} has been submitted.")
+    # Check if the user exists based on their name
+    user = session.query(User).filter(User.name == user_name).first()
+
+    if user:
+
+        # Check if the book is in the database
+        book = session.query(Book).filter(Book.title == user_input).first()
+
+        if book:
+            # Create a request regardless of book availability
+            new_request = Request(user_id=user.user_id, book_id=book.book_id, request_date=datetime.now(), status="Pending")  
+            session.add(new_request)
+            session.commit()
+            print(f"Your request for '{book.title}' by {book.author} has been submitted.")
+        else:
+            # If the book is not in the database, still create a request
+            print(f"Book '{user_input}' not found. Your request has been submitted.")
     else:
-        # If the book is not in the database, still create a request
-        print(f"Book '{user_input}' not found. Your request has been submitted.")
+        print(f"User '{user_name}' not found.")
+
 
 # Function to borrow a book
-def borrow_book(session, book_title, user):
+def borrow_book(session, book_title, user_name):
+
+    # Check if the user exists based on their name
+    user = session.query(User).filter(User.name == user_name).first()
+
+    if user is None:
+        print(f"User '{user_name}' not found.")
+        return
+    
     book = session.query(Book).filter(Book.title == book_title).first()
 
     if book is None:
@@ -53,10 +70,10 @@ def borrow_book(session, book_title, user):
         session.add(borrow)
         book.available = False
         session.commit()
-        print(f"You have borrowed '{book.title}' by {book.author}.")
+        print(f"You, {user_name}, have borrowed '{book.title}' by {book.author}.")
     else:
         print("The selected book is not available. You can request it.")
-        request_book(session)
+        request_book(session, user_name)
 
     # Function to return borrowed books automatically after 20 days
 def auto_return_books(session):
