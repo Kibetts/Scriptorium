@@ -4,7 +4,10 @@ from models import engine, User, Book, Request, Borrow
 from datetime import datetime, timedelta
 
 # Function to list available books and prompt user for input
+# Function to list available books and prompt user for input
 def list_available_books(session):
+    user_name = input("Enter your name: ")  # Prompt the user for their name
+
     available_books = session.query(Book).filter(Book.available == True).all()
 
     if not available_books:
@@ -17,13 +20,12 @@ def list_available_books(session):
     user_input = input("Enter the title of the book you want to borrow or 'r' to request: ")
 
     if user_input == 'r':
-         request_book(session, None)
-       
+        request_book(session, user_name)  # Pass user_name to request_book
     else:
-        user_name = input("Enter your name: ")  # Prompt the user for their name
         borrow_book(session, user_input, user_name)  # Pass user_name to borrow_book
 
 
+# Function to request a book
 # Function to request a book
 def request_book(session, user_name):
     user_input = input("Enter the title of the book you want to request: ")
@@ -32,13 +34,12 @@ def request_book(session, user_name):
     user = session.query(User).filter(User.name == user_name).first()
 
     if user:
-
         # Check if the book is in the database
         book = session.query(Book).filter(Book.title == user_input).first()
 
         if book:
             # Create a request regardless of book availability
-            new_request = Request(user_id=user.user_id, book_id=book.book_id, request_date=datetime.now(), status="Pending")  
+            new_request = Request(user_id=user.user_id, book_id=book.book_id, request_date=datetime.now(), status="Pending")
             session.add(new_request)
             session.commit()
             print(f"Your request for '{book.title}' by {book.author} has been submitted.")
@@ -96,12 +97,21 @@ def return_book(session, user_name):
     borrow = session.query(Borrow).filter(Borrow.user_id == user.user_id, Borrow.book_id == book.book_id, Borrow.return_date == None).first()
 
     if borrow:
-        borrow.return_date = datetime.now()
+        return_date_input = input("Enter the return date (YYYY-MM-DD): ")
+
+        try:
+            return_date = datetime.strptime(return_date_input, "%Y-%m-%d")
+        except ValueError:
+            print("Invalid date format. Please use YYYY-MM-DD.")
+            return
+
+        borrow.return_date = return_date
         book.available = True
         session.commit()
-        print(f"You, {user_name}, have returned '{book.title}' by {book.author}.")
+        print(f"You, {user_name}, have scheduled the return of '{book.title}' by {book.author} on {return_date}.")
     else:
         print("You have not borrowed this book or it has already been returned.")
+    
 
 # Function to return borrowed books automatically after 20 days
 def auto_return_books(session):
@@ -159,6 +169,9 @@ if __name__ == "__main__":
         elif choice == '3':
             cancel_request(session)
         elif choice == '4':
+            user_name = input("Enter your name: ")
+            return_book(session, user_name)
+        elif choice == '5':
             break
         else:
             print("Invalid choice. Please try again.")
