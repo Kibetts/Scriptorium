@@ -75,7 +75,24 @@ def borrow_book(session, book_title, user_name):
         print("The selected book is not available. You can request it.")
         request_book(session, user_name)
 
-    # Function to return borrowed books automatically after 20 days
+# Function to manually return a borrowed book
+def return_book(session, user_name):
+    user_input = input("Enter the title of the book you want to return: ")
+
+    # Check if the user exists based on their name
+    user = session.query(User).filter(User.name == user_name).first()
+
+    if user is None:
+        print(f"User '{user_name}' not found.")
+        return
+
+    book = session.query(Book).filter(Book.title == user_input).first()
+
+    if book is None:
+        print("Book not found.")
+        return
+
+# Function to return borrowed books automatically after 20 days
 def auto_return_books(session):
     borrowings = session.query(Borrow).filter(Borrow.return_date == None).all()
 
