@@ -91,6 +91,17 @@ def return_book(session, user_name):
     if book is None:
         print("Book not found.")
         return
+    
+    # Check if the user has borrowed the book
+    borrow = session.query(Borrow).filter(Borrow.user_id == user.user_id, Borrow.book_id == book.book_id, Borrow.return_date == None).first()
+
+    if borrow:
+        borrow.return_date = datetime.now()
+        book.available = True
+        session.commit()
+        print(f"You, {user_name}, have returned '{book.title}' by {book.author}.")
+    else:
+        print("You have not borrowed this book or it has already been returned.")
 
 # Function to return borrowed books automatically after 20 days
 def auto_return_books(session):
